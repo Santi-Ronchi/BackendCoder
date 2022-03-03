@@ -34,13 +34,11 @@ class Contenedor {
             if (!fs.existsSync(this.path)) {
                 throw Error('File does not exist.');
             }
-            const productos = await this.getAll();
-            const object = productos.find(product => numero === product.id) ;
-            if(object === undefined){
-                return null;
-            }else{
-                return object;
-            }
+            const content = await fs.promises.readFile(this.path, 'utf-8');
+            let object = null;
+            console.log(content);
+            object = JSON.parse(content).filter(({id}) => id === `${numero}`);
+            return object
             
         } catch (error) {
             throw Error(error.message);
@@ -55,7 +53,7 @@ class Contenedor {
             const content = await fs.promises.readFile(this.path, 'utf-8');
             return JSON.parse(content);
         } catch (error) {
-           return [];
+           return (err);
         }
     }
 
@@ -86,6 +84,12 @@ class Contenedor {
         } catch (error) {
             throw Error(error.message);
         }
+    }
+
+    async getRandom() {
+        const numero = Math.floor(Math.random() * 3) + 1;
+        const obj = this.getById(numero).then(val => {return val});
+        return obj
     }
 
 } 

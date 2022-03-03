@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "title": "product1",
+        "price": "$500",
+        "thumbnail": "generic-thumbnail-path",
+        "id": "1"
+    },
+    {
+        "title": "product2",
+        "price": "$800",
+        "thumbnail": "generic-thumbnail-path",
+        "id": "2"
+    },
+    {
+        "title": "product3",
+        "price": "$1000",
+        "thumbnail": "generic-thumbnail-path",
+        "id": "3"
+    }
+]

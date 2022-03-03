@@ -11,11 +11,14 @@ app.get('/', (required, response) => {
 
 app.get('/productos', async (required, response) => {
     const productos = await contenedor.getAll();
+    response.type('application/json');
     response.json(productos);
 });
 
 app.get('/productoRandom', async (required, response) => {
-    await response.send("Mamá aprendi a hacer un server")
+    const prodRandom = await contenedor.getRandom();
+    response.type('application/json');
+    response.json(prodRandom);
 });
 
 app.listen(2000, () => {
