@@ -4,7 +4,7 @@
   "description": "",
   "main": "Contenedor.js",
   "scripts": {
-    "start": "nodemon Servidor.js"
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",

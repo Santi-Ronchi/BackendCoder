@@ -19,6 +19,7 @@ class Contenedor {
             if (!entryControl || content_parsed.length == 0) {
                 obj["id"] = (content_parsed[content_parsed.length -1].id) + 1
                 fs.writeFileSync(this.path,JSON.stringify([...content_parsed,obj]))
+                console.log((content_parsed[content_parsed.length -1].id));
                 return ((content_parsed[content_parsed.length -1].id) + 1);
             }
         }
@@ -36,10 +37,12 @@ class Contenedor {
             }
             const content = await fs.promises.readFile(this.path, 'utf-8');
             let object = null;
-            console.log(content);
-            object = JSON.parse(content).filter(({id}) => id === `${numero}`);
-            return object
-            
+            object = JSON.parse(content).filter(({id}) => id === parseInt(numero));
+            if (object.length == 0) {
+                return {error: 'producto no encontrado'}
+            }else{
+                return object[0]
+            }
         } catch (error) {
             throw Error(error.message);
         }
@@ -67,7 +70,7 @@ class Contenedor {
             }
             const content = fs.readFileSync(this.path);
             const content_parsed = JSON.parse(content);
-            const newList = content_parsed.filter(element => element.id !== numero);
+            const newList = content_parsed.filter(element => element.id !== parseInt(numero));
             await fs.promises.writeFile(this.path, JSON.stringify(newList, null, 2), 'utf-8');
         } catch (error) {
             throw Error(error.message);
@@ -83,6 +86,34 @@ class Contenedor {
             await fs.promises.writeFile(this.path, content, 'utf-8');
         } catch (error) {
             throw Error(error.message);
+        }
+    }
+
+    async updateById(req) {
+
+        const {title,price,url} = req.body;
+        const idURL = parseInt(req.params.id);
+        console.log(idURL);
+        const content = JSON.parse(fs.readFileSync(this.path));
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        console.log(content);
+        
+        try {
+            let busqueda = content.find(el => el.id == idURL)
+            console.log(busqueda);
+            if(busqueda.id === idURL){
+                busqueda.title = title;
+                busqueda.price = price;
+                busqueda.url = url;
+                //this.deleteById(idURL);
+                //content.push(busqueda);
+                console.log(content);
+                const json_products=JSON.stringify(content);
+                fs.writeFileSync(this.path,json_products,'utf-8');
+                return busqueda;
+            }
+        } catch (error) {
+            throw "Error server"
         }
     }
 
